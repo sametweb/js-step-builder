@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js-step-builder Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>js-step-builder Demo</h1>
+      <div class="step-builder">
+        <div class="progress-container">
+          <div id="progress" class="progress-bar"></div>
+        </div>
+
+        <div id="steps" class="steps">
+          <div class="step">
+            <h2>Step 1</h2>
+            <p>
+              This is the first step of our demo. Fill in your basic
+              information.
+            </p>
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" id="name" placeholder="Enter your name" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" placeholder="Enter your email" />
+            </div>
+          </div>
+
+          <div class="step">
+            <h2>Step 2</h2>
+            <p>Choose your preferences for the next step.</p>
+            <div class="form-group">
+              <label for="theme">Theme:</label>
+              <select id="theme">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Notifications:</label>
+              <div class="checkbox-group">
+                <label>
+                  <input type="checkbox" id="email-notifications" /> Email
+                  notifications
+                </label>
+                <label>
+                  <input type="checkbox" id="push-notifications" /> Push
+                  notifications
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <h2>Step 3</h2>
+            <p>Review your information and complete the process.</p>
+            <div id="summary" class="summary">
+              <!-- Summary will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <div class="navigation">
+          <button id="prev-btn" class="btn" disabled>Previous</button>
+          <button id="next-btn" class="btn">Next</button>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      import { StepBuilder } from "https://cdn.jsdelivr.net/npm/js-step-builder@1.0.0/dist/index.js";
+
+      const stepBuilder = new StepBuilder({
+        onStepChange: () => {
+          updateSummary();
+        },
+      }).init("#steps");
+
+      function updateSummary() {
+        const summary = document.getElementById("summary");
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const theme = document.getElementById("theme").value;
+        const emailNotifications = document.getElementById(
+          "email-notifications"
+        ).checked;
+        const pushNotifications =
+          document.getElementById("push-notifications").checked;
+
+        summary.innerHTML = `
+                <h3>Your Information</h3>
+                <p><strong>Name:</strong> ${name || "Not provided"}</p>
+                <p><strong>Email:</strong> ${email || "Not provided"}</p>
+                <p><strong>Theme:</strong> ${theme}</p>
+                <p><strong>Notifications:</strong></p>
+                <ul>
+                    <li>Email: ${
+                      emailNotifications ? "Enabled" : "Disabled"
+                    }</li>
+                    <li>Push: ${pushNotifications ? "Enabled" : "Disabled"}</li>
+                </ul>
+            `;
+      }
+    </script>
+  </body>
+</html>
